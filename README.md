@@ -1,5 +1,7 @@
 ## b64rs
 
+[![b64rs CI](https://github.com/wuriyanto48/b64rs/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/wuriyanto48/b64rs/actions/workflows/ci.yml)
+
 Base64 Encoding implementation in Rust Programming Language
 
 ### Usage
