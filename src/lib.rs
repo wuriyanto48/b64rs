@@ -57,4 +57,27 @@ mod tests {
     
         assert_eq!(expected, out_decode_str);
     }
+
+    #[test]
+    fn test_decode_jwt() {
+        let input = String::from("eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjEyNzk3NDYwMDAsIm9hdXRoX3Rva2VuIjoiMjk1NjY2Njk1MDY0fDIuRXpwem5IRVhZWkJVZmhGQ2l4ZzYzUV9fLjM2MDAuMTI3OTc0NjAwMC0xMDAwMDA0ODMyNzI5MjN8LXJ6U1pnRVBJTktaYnJnX1VNUUNhRzlNdEY4LiIsInVzZXJfaWQiOiIxMDAwMDA0ODMyNzI5MjMifQ");
+        let expected = String::from("{\"algorithm\":\"HMAC-SHA256\",\"expires\":1279746000,\"oauth_token\":\"295666695064|2.EzpznHEXYZBUfhFCixg63Q__.3600.1279746000-100000483272923|-rzSZgEPINKZbrg_UMQCaG9MtF8.\",\"user_id\":\"100000483272923\"}");
+        
+        let mut out_decode: Vec<u8> = Vec::new();
+
+        if let Err(e) = decoder::decode(&mut input.as_bytes(), &mut out_decode) {
+            println!("{}", e);
+            std::process::exit(1);
+        }
+    
+        let out_decode_str = match String::from_utf8(out_decode) {
+            Ok(o) => o,
+            Err(e) => {
+                println!("{}", e);
+                std::process::exit(1);
+            }
+        };
+    
+        assert_eq!(expected, out_decode_str);
+    }
 }
