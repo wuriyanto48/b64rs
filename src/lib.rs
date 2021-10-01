@@ -80,4 +80,17 @@ mod tests {
     
         assert_eq!(expected, out_decode_str);
     }
+
+    #[test]
+    fn test_decode_file() {
+        let mut input_file = std::fs::File::open("./testdata/haha.txt").unwrap();
+
+        let temp_directory = std::env::temp_dir();
+        let temp_file = temp_directory.join("out_decode.png");
+
+        let mut out_file = std::fs::File::create(temp_file).unwrap();
+    
+        assert_eq!(Ok(()), decoder::decode(&mut input_file, &mut out_file));
+        
+    }
 }
