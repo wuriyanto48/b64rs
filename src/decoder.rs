@@ -21,7 +21,7 @@ pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
 
         let seg_data = &buffer[..line_read];
         
-        let mut vec_stream: Vec<u8> = Vec::new();
+        // let mut vec_stream: Vec<u8> = Vec::new();
         let mut j = 0;
         let mut dec: u64 = 0;
         for i in seg_data {
@@ -41,12 +41,15 @@ pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
         for i in 0..j-1 {
             let l_shift: u64 = 16 - i * 8;
             let cp = ((dec >> l_shift) & EIGHT_BIT_MASK) as u8;
-            vec_stream.push(cp);
+            if let Err(e) = out.write(&[cp]) {
+                return Err(format!("error write buffer out {}", e));
+            }
+            // vec_stream.push(cp);
         }
 
-        if let Err(e) = out.write(&vec_stream) {
-            return Err(format!("error write buffer out {}", e));
-        }
+        // if let Err(e) = out.write(&vec_stream) {
+        //     return Err(format!("error write buffer out {}", e));
+        // }
     }
 
     Ok(())
