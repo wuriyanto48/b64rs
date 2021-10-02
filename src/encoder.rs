@@ -16,17 +16,17 @@ pub fn encode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
 
         let seg_data = &buffer[..line_read];
         
-        let mut j = 0;
+        let mut segment_count = 0;
         let mut dec = 0;
         for i in seg_data {
-            let l_shift: u64 = 16 - j * 8;
+            let l_shift: u64 = 16 - segment_count * 8;
             let i = *i as u64;
             dec += i << l_shift;
 
-            j = j + 1;
+            segment_count = segment_count + 1;
         }
         
-        for i in 0..j+1 {
+        for i in 0..segment_count+1 {
             let r_shift: u64 =  18 - i * 6;
             let b = ((dec >> r_shift) & SIX_BIT_MASK) as u8;
             let r = BASE64_TABLE[b as usize];
@@ -35,11 +35,11 @@ pub fn encode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
             }
         }
 
-        if j == 1 {
+        if segment_count == 1 {
             if let Err(e) = out.write(&[PADDING, PADDING]) {
                 return Err(format!("error write buffer out {}", e));
             }
-        } else if j == 2 {
+        } else if segment_count == 2 {
             if let Err(e) = out.write(&[PADDING]) {
                 return Err(format!("error write buffer out {}", e));
             }

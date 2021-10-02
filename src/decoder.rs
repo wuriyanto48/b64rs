@@ -21,7 +21,7 @@ pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
 
         let seg_data = &buffer[..line_read];
         
-        let mut j = 0;
+        let mut segment_count = 0;
         let mut dec: u64 = 0;
         for i in seg_data {
             // discard padding
@@ -30,14 +30,14 @@ pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
             }
 
             let b64_idx = base64_hashmap_table.get(i).unwrap();
-            let l_shift: u64 =  18 - j * 6;
+            let l_shift: u64 =  18 - segment_count * 6;
             let base64_idx = *b64_idx as u64;
             dec += base64_idx << l_shift;
 
-            j = j + 1; 
+            segment_count = segment_count + 1; 
         }
 
-        for i in 0..j-1 {
+        for i in 0..segment_count-1 {
             let r_shift: u64 = 16 - i * 8;
             let cp = ((dec >> r_shift) & EIGHT_BIT_MASK) as u8;
             if let Err(e) = out.write(&[cp]) {
