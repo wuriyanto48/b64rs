@@ -38,8 +38,8 @@ pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
         }
 
         for i in 0..j-1 {
-            let l_shift: u64 = 16 - i * 8;
-            let cp = ((dec >> l_shift) & EIGHT_BIT_MASK) as u8;
+            let r_shift: u64 = 16 - i * 8;
+            let cp = ((dec >> r_shift) & EIGHT_BIT_MASK) as u8;
             if let Err(e) = out.write(&[cp]) {
                 return Err(format!("error write buffer out {}", e));
             }
