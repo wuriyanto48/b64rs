@@ -21,7 +21,7 @@ pub fn encode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
         for i in seg_data {
             let l_shift: u64 = 16 - segment_count * 8;
             let i = *i as u64;
-            dec += i << l_shift;
+            dec |= i << l_shift;
 
             segment_count = segment_count + 1;
         }

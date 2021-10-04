@@ -32,7 +32,7 @@ pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
             let b64_idx = base64_hashmap_table.get(i).unwrap();
             let l_shift: u64 =  18 - segment_count * 6;
             let base64_idx = *b64_idx as u64;
-            dec += base64_idx << l_shift;
+            dec |= base64_idx << l_shift;
 
             segment_count = segment_count + 1; 
         }
