@@ -4,7 +4,7 @@ use std::io::{ Read, Write };
 pub fn decode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
     let mut base64_hashmap_table: std::collections::HashMap<u8, usize> = std::collections::HashMap::new();
     for (pos, &e) in BASE64_TABLE.iter().enumerate() {
-        let cp = e.as_bytes()[0];
+        let cp = e;
         base64_hashmap_table.insert(cp, pos);
     }
 

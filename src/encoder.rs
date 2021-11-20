@@ -30,7 +30,7 @@ pub fn encode(input: &mut dyn Read, out: &mut dyn Write) -> Result<(), String> {
             let r_shift: u64 =  18 - i * 6;
             let b = ((dec >> r_shift) & SIX_BIT_MASK) as u8;
             let r = BASE64_TABLE[b as usize];
-            if let Err(e) = out.write(r.as_bytes()) {
+            if let Err(e) = out.write(&[r]) {
                 return Err(format!("error write buffer out {}", e));
             }
         }
